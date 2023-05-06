@@ -6,8 +6,11 @@ const createRouteFile = (routeName) => {
   const filePath = `./routes/${routeName}.routes.js`
   const fileContent = `const express = require('express')
 const router = express.Router()
+const validator = require('express-validator');
 
-router.get('/${routeName}', (req, res) => {
+router.get('/${routeName}', [
+
+],(req, res) => {
   res.status(200).json({ message: 'Connected!' })
 })
 
