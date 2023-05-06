@@ -9,7 +9,8 @@ router.get('/recipes/:search/:difficulty/:price/:type',
   [
     validator.param('search').isString(),
     validator.param('difficulty').isString(),
-    validator.param('price').isString()
+    validator.param('price').isString(),
+    validator.param('type').isString()
   ],
   async (req, res) => {
     const difficulty = getDifficulty(req.params.difficulty)
