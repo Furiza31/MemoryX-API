@@ -1,0 +1,11 @@
+DROP TABLE IF EXISTS todos;
+
+CREATE TABLE todos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title VARCHAR(255),
+    description VARCHAR(255),
+    data DATETIME,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    user_id INTEGER,
+    FOREIGN KEY(user_id) REFERENCES users(id)
+);
