@@ -19,28 +19,28 @@ router.post('/authentification/signup',
     const db = Database.getInstance()
     // Vérifiez que le nom d'utilisateur n'est pas déjà utilisé
     db.connect().then(() => {
-      db.query(`SELECT * FROM users WHERE email = '${email}'`).then((users) => {
+      db.query('SELECT * FROM users WHERE email = ?', [email]).then((users) => {
         if (users.length > 0) {
-          return res.status(409).json({ error: 'Username already used' })
+          return res.status(409).json({ error: 'Email déjà utilisé' })
         }
         // Cryptez le mot de passe
         bcrypt.hash(password, config.saltRounds).then((hash) => {
           // Ajoutez le nouvel utilisateur à la liste
-          db.query(`INSERT INTO users (username, email, password) VALUES ('${username}', ${email},'${hash}')`).then(() => {
+          db.query('INSERT INTO users (username, email, password) VALUES (?, ?, ?)', [username, email, hash]).then(() => {
             // Créez un jeton d'authentification et renvoyez-le au client
             const token = jwt.sign({ email }, config.secretKey, { expiresIn: '1h' })
-            res.status(200).json({ message: 'User created', token })
+            res.status(200).json({ message: 'Compte créer avec succès', token })
           }).catch((err) => {
-            res.status(500).json({ error: 'Internal server error' })
+            res.status(500).json({ error: 'Erreur interne du serveur' })
             log(chalk.red(err))
           })
         })
       }).catch((err) => {
-        res.status(500).json({ error: 'Internal server error' })
+        res.status(500).json({ error: 'Erreur interne du serveur' })
         log(chalk.red(err))
       })
     }).catch((err) => {
-      res.status(500).json({ error: 'Internal server error' })
+      res.status(500).json({ error: 'Erreur interne du serveur' })
       log(chalk.red(err))
     })
   })
@@ -56,40 +56,28 @@ router.post('/authentification/login',
     const db = Database.getInstance()
 
     db.connect().then(() => {
-      db.query(`SELECT * FROM users WHERE email = '${email}'`).then((users) => {
+      db.query('SELECT * FROM users WHERE email = ?', [email]).then((users) => {
         if (users.length === 0) {
-          return res.status(404).json({ error: 'User not found' })
+          return res.status(404).json({ error: 'Informations invalide' })
         }
         const user = users[0]
         // Vérifiez que le mot de passe correspond à celui stocké
         bcrypt.compare(password, user.password).then((match) => {
           if (!match) {
-            return res.status(401).json({ error: 'Invalid password' })
+            return res.status(401).json({ error: 'Informations invalide' })
           }
           // Créez un jeton d'authentification et renvoyez-le au client
           const token = jwt.sign({ email }, config.secretKey, { expiresIn: '1h' })
-          res.status(200).json({ message: 'Login successful', token })
+          res.status(200).json({ message: 'Connexion réussie', token })
         })
       }).catch((err) => {
-        res.status(500).json({ error: 'Internal server error' })
+        res.status(500).json({ error: 'Erreur interne du serveur' })
         log(chalk.red(err))
       })
     }).catch((err) => {
-      res.status(500).json({ error: 'Internal server error' })
+      res.status(500).json({ error: 'Erreur interne du serveur' })
       log(chalk.red(err))
     })
-  })
-
-// Endpoint pour la déconnexion d'un utilisateur
-router.post('/authentification/logout',
-  [
-    validator.check('token').isString()
-  ],
-  (req, res) => {
-    const { token } = req.body
-    // Supprimez le jeton d'authentification du client
-    jwt.destroy(token)
-    res.status(200).json({ message: 'Logout successful' })
   })
 
 // Endpoint pour la vérification de l'état de la session utilisateur
@@ -103,9 +91,9 @@ router.post('/authentification/check-session',
     // Vérifiez que le jeton d'authentification est valide
     jwt.verify(token, config.secretKey, (err, decoded) => {
       if (err) {
-        return res.status(401).json({ error: 'Invalid token' })
+        return res.status(401).json({ error: 'Jeton invalide' })
       }
-      res.status(200).json({ message: 'Valid token' })
+      res.status(200).json({ message: 'Jeton valide' })
     })
   })
 

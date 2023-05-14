@@ -79,17 +79,16 @@ class Database {
     * db.request('SELECT * FROM users WHERE id = :id', { id: 1 })
    * @returns {Promise} The result of the query
    */
-  query (sql, params = {}) {
+  query (sql, params = []) {
     return new Promise((resolve, reject) => {
       const query = this.db.prepare(sql)
-      query.run(params, (err, rows) => {
+      query.all(params, (err, rows) => {
         if (err) {
           log(chalk.red(err))
           reject(err)
         }
         resolve(rows)
-      }
-      )
+      })
     })
   }
 }
