@@ -28,7 +28,7 @@ router.post('/authentification/signup',
           // Ajoutez le nouvel utilisateur à la liste
           db.query('INSERT INTO users (username, email, password) VALUES (?, ?, ?)', [username, email, hash]).then(() => {
             // Créez un jeton d'authentification et renvoyez-le au client
-            const token = jwt.sign({ email }, config.secretKey, { expiresIn: '1h' })
+            const token = jwt.sign({ email }, config.secretKey, { expiresIn: '30m' })
             res.status(200).json({ message: 'Compte créer avec succès', token })
           }).catch((err) => {
             res.status(500).json({ error: 'Erreur interne du serveur' })
@@ -67,7 +67,7 @@ router.post('/authentification/login',
             return res.status(401).json({ error: 'Informations invalide' })
           }
           // Créez un jeton d'authentification et renvoyez-le au client
-          const token = jwt.sign({ email }, config.secretKey, { expiresIn: '1h' })
+          const token = jwt.sign({ email }, config.secretKey, { expiresIn: '30m' })
           res.status(200).json({ message: 'Connexion réussie', token })
         })
       }).catch((err) => {
