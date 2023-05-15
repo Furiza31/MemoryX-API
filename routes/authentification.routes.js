@@ -80,21 +80,19 @@ router.post('/authentification/login',
     })
   })
 
-// Endpoint pour la vérification de l'état de la session utilisateur
-router.post('/authentification/check-session',
-  [
-    validator.check('token').isString()
-  ]
-  ,
-  (req, res) => {
-    const { token } = req.body
-    // Vérifiez que le jeton d'authentification est valide
-    jwt.verify(token, config.secretKey, (err, decoded) => {
-      if (err) {
-        return res.status(401).json({ error: 'Jeton invalide' })
-      }
-      res.status(200).json({ message: 'Jeton valide' })
-    })
+// Midleware pour vérifier le jeton d'authentification
+const isAuthentificated = (req, res, next) => {
+  const token = req.headers.authorization
+  if (!token) {
+    return res.status(401).json({ error: 'Aucun jeton d\'authentification fourni' })
+  }
+  jwt.verify(token, config.secretKey, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ error: 'Jeton d\'authentification invalide' })
+    }
+    next()
   })
+}
 
 module.exports = router
+module.exports.isAuthentificated = isAuthentificated
