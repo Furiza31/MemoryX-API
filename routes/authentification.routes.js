@@ -84,11 +84,11 @@ router.post('/authentification/login',
 const isAuthentificated = (req, res, next) => {
   const token = req.headers.authorization
   if (!token) {
-    return res.status(401).json({ error: 'Aucun jeton d\'authentification fourni' })
+    return res.status(401).json({ error: 'Aucun jeton d\'authentification fourni', invalidToken: true })
   }
   jwt.verify(token, config.secretKey, (err, decoded) => {
     if (err) {
-      return res.status(401).json({ error: 'Jeton d\'authentification invalide' })
+      return res.status(401).json({ error: 'Jeton d\'authentification invalide', invalidToken: true })
     }
     next()
   })
