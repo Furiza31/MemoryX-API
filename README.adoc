@@ -6,8 +6,8 @@ The MemoryX REST API - Hugo Wendjaneh
 
 == Getting started
 === Prerequisites
-- [Node.js](https://nodejs.org/en/) (v10.15.3)
-- [npm](https://www.npmjs.com/) (v6.4.1)
+- https://nodejs.org/en/[Node.js] (v10.15.3)
+- https://www.npmjs.com/[npm] (v6.4.1)
 
 === Installation
 1. Clone the repository
