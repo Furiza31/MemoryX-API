@@ -21,7 +21,6 @@ npm install
 npm run generate
 ```
 
-[#serverRun]
 === Run the server
 ```bash
 npm run dev
@@ -33,7 +32,7 @@ npm run test
 ```
 
 == API Documentation
-See <<serverRun, Run the server>> and navigate to http://localhost:3000/
+See <<run-the-server, Run the server>> and navigate to http://localhost:3000/
 
 
 == Modify the database
