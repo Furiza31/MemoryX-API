@@ -8,7 +8,7 @@ const { prisma } = require('../../prismaClient.js');
  * method: GET
  * description: get all todos
  * access: private
- * @returns {object} message and todos
+ * @returns {object} message and a list of todos
  */
 router.get('/todo',
 isAuthentificated,
