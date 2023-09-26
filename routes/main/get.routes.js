@@ -3,7 +3,6 @@ const router = express.Router();
 const docsLoader = require('../../loader/docs.js');
 const path = require('path');
 const docs = docsLoader.init(path.join(__dirname, '../'))
-console.log(docs);
 
 /**
  * path: /

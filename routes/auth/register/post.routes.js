@@ -11,6 +11,9 @@ const { prisma } = require('../../../prismaClient.js');
  * method: POST
  * description: register a new user 
  * access: public
+ * @param {string} username | username of the user
+ * @param {string} email | email of the user
+ * @param {string} password | password of the user
  * @returns {object} message and token
  */
 router.post('/auth/register', validate([

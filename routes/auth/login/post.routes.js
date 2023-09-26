@@ -11,6 +11,8 @@ const { prisma } = require('../../../prismaClient.js');
  * method: POST
  * description: login a user
  * access: public
+ * @param {string} email | email of the user
+ * @param {string} password | password of the user
  * @returns {object} message and token
  */
 router.post('/auth/login', validate([

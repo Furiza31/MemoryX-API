@@ -53,6 +53,7 @@ const parseComment = (comment) => {
         method: '',
         description: '',
         access: '',
+        params: [],
         return: '',
     };
 
@@ -75,6 +76,18 @@ const parseComment = (comment) => {
                 let returnParts = parts[0].split(' ');
                 returnParts.shift();
                 commentObject['return'] = returnParts.join(' ');
+            }
+            if (parts[0].includes('@param')) {
+                let paramParts = parts[0].split(' ');
+                paramParts.shift();
+                let fullParam = paramParts.join(' ');
+                let paramName = fullParam.split('|')[0].trim();
+                let paramDescription = fullParam.split('|')[1].trim();
+                paramDescription = paramDescription.charAt(0).toUpperCase() + paramDescription.slice(1)
+                commentObject.params.push({
+                    name: paramName,
+                    description: paramDescription,
+                });
             }
         }
     }

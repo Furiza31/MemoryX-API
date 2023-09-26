@@ -9,12 +9,16 @@ const { prisma } = require('../../prismaClient.js');
  * method: PUT
  * description: update a todo
  * access: private
+ * @param {number} id | id of the todo passed in the url
+ * @param {string} title | title of the todo optional
+ * @param {string} content | content of the todo optional
+ * @param {boolean} isDone | is the todo done optional
  * @returns {object} message
  */
 router.put('/todo/:id', validate([
-    validator.check('title').isLength({ min: 1 }),
-    validator.check('content').isLength({ min: 1 }),
-    validator.check('isDone').isBoolean()
+    validator.check('title').optional().isLength({ min: 1 }),
+    validator.check('content').optional().isLength({ min: 1 }),
+    validator.check('isDone').optional().isBoolean()
 ]),
 isAuthentificated,
 async (req, res) => {
@@ -27,6 +31,14 @@ async (req, res) => {
     // get the title and content
     const { title, content, isDone } = req.body;
 
+    // get the todo
+    const todo = await prisma.todo.findUnique({
+        where: {
+            id: todoId,
+            userId: id
+        }
+    });
+
     // update the todo
     await prisma.todo.update({
         where: {
@@ -34,9 +46,9 @@ async (req, res) => {
             userId: id
         },
         data: {
-            title,
-            content,
-            isDone
+            title: title || todo.title,
+            content: content || todo.content,
+            isDone: isDone || todo.isDone
         }
     });
 

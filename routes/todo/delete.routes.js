@@ -9,6 +9,7 @@ const { prisma } = require('../../prismaClient.js');
  * method: DELETE
  * description: delete a todo
  * access: private
+ * @param {number} id | id of the todo passed in the url
  * @returns {object} message
  */
 router.delete('/todo/:id', validate([

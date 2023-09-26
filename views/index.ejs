@@ -23,6 +23,12 @@
                             <div class="content">
                                 <p>Description: <%= docs[doc][i].description %></p>
                                 <p>Access: <span class="<%= docs[doc][i].access %>"><%= docs[doc][i].access %></span></p>
+                                <% for (let j = 0; j < docs[doc][i].params.length; j++) { %>
+                                    <div class="param <%= docs[doc][i].params.length - 1 == j ? 'last-param' : '' %>">
+                                        <p>Param: <%= docs[doc][i].params[j].name %></p>
+                                        <p><%= docs[doc][i].params[j].description %></p>
+                                    </div>
+                                <% } %>
                                 <p>Return: <%= docs[doc][i].return %></p>
                             </div>
                         </div>

@@ -126,3 +126,22 @@ span.public {
 span.private {
     color: red;
 }
+
+div.param {
+    position: relative;
+    display: flex;
+    flex-flow: row nowrap;
+    width: 100%;
+    height: auto;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid black;
+}
+
+div.last-param {
+    border-bottom: 1px solid black;
+}
+
+div.param p {
+    width: fit-content;
+}

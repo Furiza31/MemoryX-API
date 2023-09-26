@@ -9,7 +9,9 @@ const { prisma } = require('../../prismaClient.js');
  * method: POST
  * description: create a new todo
  * access: private
- * @returns {object} message
+ * @param {string} title | title of the todo
+ * @param {string} content | content of the todo
+ * @returns {object} message and todo
  */
 router.post('/todo', validate([
     validator.check('title').isLength({ min: 1 }),
