@@ -1,0 +1,128 @@
+@font-face {
+    font-family: 'Comfortaa';
+    src: url('/fonts/comfortaa/Comfortaa-Regular.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    padding: 0px;
+    margin: 0px;
+    font-family: 'Comfortaa', cursive;
+    font-size: 17px;
+    box-sizing: border-box;
+}
+
+h1.title {
+    position: relative;
+    display: block;
+    text-align: center;
+    margin-top: 2vh;
+    font-size: 3em;
+}
+
+h2.subtitle {
+    position: relative;
+    display: block;
+    text-align: center;
+    margin-top: 1vh;
+    font-size: 2em;
+}
+
+section {
+    position: relative;
+    display: block;
+    margin: 0 auto;
+    margin-top: 2vh;
+    width: 80%;
+    height: auto;
+}
+
+h3 {
+    position: relative;
+    display: block;
+    font-size: 1.5em;
+    margin-top: 2vh;
+}
+
+div.doc {
+    position: relative;
+    display: block;
+    height: auto;
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 1vh;
+}
+
+span.path {
+    color: grey;
+}
+
+div.header {
+    position: relative;
+    display: flex;
+    flex-flow: row nowrap;
+    width: 100%;
+    height: auto;
+    justify-content: space-between;
+    align-items: center;
+}
+
+span.badge {
+    position: relative;
+    display: block;
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+span.POST {
+    background-color: orange;
+    color: white;
+}
+
+span.GET {
+    background-color: green;
+    color: white;
+}
+
+span.PUT {
+    background-color: blue;
+    color: white;
+}
+
+span.DELETE {
+    background-color: red;
+    color: white;
+}
+
+div.content {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-top: 1vh;
+    background-color: #eeeeee;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+div.content p {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-top: 1vh;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+span.public {
+    color: green;
+}
+
+span.private {
+    color: red;
+}

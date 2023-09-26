@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory-X | Documentations</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+</head>
+<body>
+    <main>
+        <h1 class="title">Memory-X API</h1>
+        <h2 class="subtitle">Documentations</h2>
+        <section>
+            <% for (let doc in docs) { %>
+                    <h3><%= doc %></h3>
+                    <% for (let i = 0; i < docs[doc].length; i++) { %>
+                        <div class="doc">
+                            <div class="header">
+                                <p>Path: <span class="path"><%= docs[doc][i].path %></span></p>
+                                <span class="badge <%= docs[doc][i].method %>"><%= docs[doc][i].method %></span>
+                            </div>
+                            <div class="content">
+                                <p>Description: <%= docs[doc][i].description %></p>
+                                <p>Access: <span class="<%= docs[doc][i].access %>"><%= docs[doc][i].access %></span></p>
+                                <p>Return: <%= docs[doc][i].return %></p>
+                            </div>
+                        </div>
+                    <% } %>
+            <% } %>
+        </section>
+    </main>
+</body>
+</html>

@@ -13,6 +13,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(logger.logger);
 
+// set ejs view engine
+app.set('view engine', 'ejs');
+
+// set static public folder
+app.use(express.static(path.join(__dirname, '/public')));
+
+// set favicon for all requests
+app.get('/favicon.ico', (req, res) => {
+    res.sendFile(path.join(__dirname, '/public/images/favicon.ico'))
+});
+
 // load routes
 routes.init(app, path.join(__dirname, '/routes'));
 
