@@ -17,9 +17,6 @@ router.delete('/todo/:id', validate([
 ]),
 isAuthentificated,
 async (req, res) => {
-    // get the user id
-    const { id } = req.user;
-
     // get the todo id
     const todoId = req.params.id;
 
@@ -27,7 +24,6 @@ async (req, res) => {
     await prisma.todo.delete({
         where: {
             id: todoId,
-            userId: id
         }
     });
 

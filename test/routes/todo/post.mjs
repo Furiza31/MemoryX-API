@@ -3,7 +3,6 @@ import { it, describe } from 'mocha';
 import { assert, expect } from 'chai';
 import register from '../../actions/register.mjs'
 import deleteUser from '../../actions/deleteUser.mjs'
-import deleteTodo from '../../actions/deleteTodo.mjs'
 import config from '../../config.mjs';
 const api = axios.create({
     baseURL: `http://localhost:${config.PORT}`
@@ -84,7 +83,6 @@ describe('POST /todo', () => {
             expect(res.data.message).to.equal('Todo created successfully');
             expect(res.data.todo).to.not.be.undefined;
             expect(res.data.todo.id).to.not.be.undefined;
-            await deleteTodo(token, res.data.todo.id);
         }).catch(() => {
             assert.fail('Hum something went wrong');
         });

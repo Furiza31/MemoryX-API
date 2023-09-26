@@ -22,11 +22,8 @@ router.put('/todo/:id', validate([
 ]),
 isAuthentificated,
 async (req, res) => {
-    // get the user id
-    const { id } = req.user;
-
     // get the todo id
-    const todoId = req.params.id;
+    const todoId = parseInt(req.params.id);
 
     // get the title and content
     const { title, content, isDone } = req.body;
@@ -34,16 +31,14 @@ async (req, res) => {
     // get the todo
     const todo = await prisma.todo.findUnique({
         where: {
-            id: todoId,
-            userId: id
+            id: todoId
         }
     });
 
     // update the todo
     await prisma.todo.update({
         where: {
-            id: todoId,
-            userId: id
+            id: todoId
         },
         data: {
             title: title || todo.title,

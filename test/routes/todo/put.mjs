@@ -8,10 +8,16 @@ import config from '../../config.mjs';
 const api = axios.create({
     baseURL: `http://localhost:${config.PORT}`
 });
+const data = {
+    title: 'modified title',
+    content: 'modified content',
+    isDone: false
+}
 
-describe('DELETE /todo/:id', () => {
+describe('PUT /todo/:id', () => {
+
     it('should return 401 if not authenticated', async () => {
-        await api.delete('/todo/0').then(() => {
+        await api.put('/todo/1', data).then(() => {
             assert.fail('Hum something went wrong');
         }).catch(err => {
             expect(err.response.status).to.equal(401);
@@ -21,7 +27,7 @@ describe('DELETE /todo/:id', () => {
     });
 
     it('should return 401 if the token is invalid', async () => {
-        await api.delete('/todo/0',{
+        await api.put('/todo/1', data, {
             headers: {
                 authorization: config.INVALID_TOKEN
             }
@@ -34,30 +40,16 @@ describe('DELETE /todo/:id', () => {
         });
     });
 
-    it('should return 404 if the id is missing', async () => {
-        const token = await register();
-        await api.delete('/todo', {
-            headers: {
-                authorization: token
-            }
-        }).then(() => {
-            assert.fail('Hum something went wrong');
-        }).catch(err => {
-            expect(err.response.status).to.equal(404);
-        });
-        await deleteUser(token);
-    });
-
-    it('should return 200 if the todo has been deleted', async () => {
+    it('should return 200 if the todo has been modified', async () => {
         const token = await register();
         const todoId = await createTodo(token);
-        await api.delete('/todo/' + todoId ,{
+        await api.put(`/todo/${todoId}`, data, {
             headers: {
                 authorization: token
             }
-        }).then(res => {
+        }).then(async res => {
             expect(res.status).to.equal(200);
-            expect(res.data.message).to.equal(`Todo ${todoId} deleted successfully`);
+            expect(res.data.message).to.equal(`Todo ${todoId} updated successfully`);
         }).catch(() => {
             assert.fail('Hum something went wrong');
         });
