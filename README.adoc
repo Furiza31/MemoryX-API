@@ -1,5 +1,8 @@
 = MemoryX-API
-The MemoryX REST API
+:toc:
+:toclevels: 5
+v1
+The MemoryX REST API - Hugo Wendjaneh
 
 == Getting started
 === Prerequisites
@@ -31,3 +34,23 @@ npm run test
 
 == API Documentation
 See <<serverRun, Run the server>> and navigate to http://localhost:3000/
+
+
+== Modify the database
+See https://www.prisma.io/docs/concepts/database-connectors/sqlite[Prisma SQLite documentation] before modifying the database.
+
+=== Make a change to the database schema
+==== Modify the schema
+Edit `prisma/datamodel.prisma` to whatever you want the new schema to be.
+
+==== Make a migration
+After modifying the schema, run the following command to generate a migration:
+```bash
+npm run migrate
+```
+Then name your migration and press enter.
+
+==== Generate the Prisma client
+```bash
+npm run generate
+```
