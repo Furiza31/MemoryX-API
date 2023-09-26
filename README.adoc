@@ -21,7 +21,7 @@ npm install
 npm run generate
 ```
 
-[[serverRun]]
+[#serverRun]
 === Run the server
 ```bash
 npm run dev
