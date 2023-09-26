@@ -1,29 +1,33 @@
-# MemoryX-API
+= MemoryX-API
 The MemoryX REST API
 
-## Getting started
-### Prerequisites
+== Getting started
+=== Prerequisites
 - [Node.js](https://nodejs.org/en/) (v10.15.3)
 - [npm](https://www.npmjs.com/) (v6.4.1)
 
-### Installation
+=== Installation
 1. Clone the repository
 2. Install dependencies
 ```bash
 npm install
 ```
 
-### Initialize the database
+=== Initialize the database
 ```bash
 npm run generate
 ```
 
-### Run the server
+[[serverRun]]
+=== Run the server
 ```bash
 npm run dev
 ```
 
-## Run tests
+== Run tests
 ```bash
 npm run test
 ```
+
+== API Documentation
+See <<serverRun, Run the server>> and navigate to http://localhost:3000/
