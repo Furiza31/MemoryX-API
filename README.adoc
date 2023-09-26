@@ -40,7 +40,7 @@ See https://www.prisma.io/docs/concepts/database-connectors/sqlite[Prisma SQLite
 
 === Make a change to the database schema
 ==== Modify the schema
-Edit `prisma/datamodel.prisma` to whatever you want the new schema to be.
+Edit `prisma/schema.prisma` to whatever you want the new schema to be.
 
 ==== Make a migration
 After modifying the schema, run the following command to generate a migration:
