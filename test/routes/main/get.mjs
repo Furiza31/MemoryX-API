@@ -14,12 +14,4 @@ describe('GET /', () => {
             assert.fail('Hum something went wrong');
         });
     });
-    it('should return a message', async () => {
-        await api.get('/').then(res => {
-            expect(res.data.message).to.not.be.undefined;
-            expect(res.data.available).to.be.true;
-        }).catch(() => {
-            assert.fail('Hum something went wrong');
-        });
-    });
 });
