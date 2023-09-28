@@ -18,6 +18,7 @@ describe('POST /auth/login', () => {
             expect(res.status).to.equal(200);
             expect(res.data.message).to.equal('Logged in successfully');
             expect(res.data.token).to.not.be.undefined;
+            expect(res.data.user).to.not.be.undefined;
         }).catch(() => {
             assert.fail('Hum something went wrong');
         });

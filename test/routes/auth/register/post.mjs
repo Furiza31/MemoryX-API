@@ -19,6 +19,7 @@ describe('POST /auth/register', () => {
             expect(res.status).to.equal(200);
             expect(res.data.message).to.equal('Account created successfully');
             expect(res.data.token).to.not.be.undefined;
+            expect(res.data.user).to.not.be.undefined;
             await deleteUser(res.data.token);
         }).catch(() => {
             assert.fail('Hum something went wrong');
