@@ -14,7 +14,7 @@ const validate = validations => {
     if (errors.isEmpty()) return next();
     
     // else return the errors
-    res.status(400).json({ errors: errors.array() });
+    res.status(400).json({ error: errors.array() });
   };
 };
 

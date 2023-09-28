@@ -32,7 +32,7 @@ describe('POST /auth/login', () => {
             assert.fail('Hum something went wrong');
         }).catch(err => {
             expect(err.response.status).to.equal(400);
-            expect(err.response.data.errors).to.not.be.undefined;
+            expect(err.response.data.error).to.not.be.undefined;
         });
     });
 
@@ -43,7 +43,7 @@ describe('POST /auth/login', () => {
             assert.fail('Hum something went wrong');
         }).catch(err => {
             expect(err.response.status).to.equal(400);
-            expect(err.response.data.errors).to.not.be.undefined;
+            expect(err.response.data.error).to.not.be.undefined;
         });
     });
 
@@ -55,7 +55,7 @@ describe('POST /auth/login', () => {
             assert.fail('Hum something went wrong');
         }).catch(err => {
             expect(err.response.status).to.equal(400);
-            expect(err.response.data.errors).to.not.be.undefined;
+            expect(err.response.data.error).to.not.be.undefined;
         });
     });
 
@@ -67,7 +67,7 @@ describe('POST /auth/login', () => {
             assert.fail('Hum something went wrong');
         }).catch(err => {
             expect(err.response.status).to.equal(400);
-            expect(err.response.data.errors).to.not.be.undefined;
+            expect(err.response.data.error).to.not.be.undefined;
         });
     });
 
