@@ -14,7 +14,7 @@ const { prisma } = require('../../../prismaClient.js');
  * @param {string} username | username of the user
  * @param {string} email | email of the user
  * @param {string} password | password of the user
- * @returns {object} message and token
+ * @returns {object} message, token and user data
  */
 router.post('/auth/register', validate([
     validator.check('username').isString(),
@@ -56,6 +56,11 @@ async (req, res) => {
     res.status(200).json({
         message: 'Account created successfully',
         token,
+        user: {
+            id: newUser.id,
+            username: newUser.username,
+            email: newUser.email
+        }
     });
 });
 

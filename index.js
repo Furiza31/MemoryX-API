@@ -34,5 +34,5 @@ app.use((req, res, next) => {
 
 // listen on port
 app.listen(parseInt(config.PORT), () => {
-    console.log(`API listening on http://localhost:${parseInt(config.PORT)}`);
+    console.log(`API listening on http://localhost:${parseInt(config.PORT)}\nYou can access the API documentation on the root path.`);
 });

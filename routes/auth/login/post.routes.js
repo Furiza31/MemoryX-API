@@ -13,7 +13,7 @@ const { prisma } = require('../../../prismaClient.js');
  * access: public
  * @param {string} email | email of the user
  * @param {string} password | password of the user
- * @returns {object} message and token
+ * @returns {object} message, token and user data
  */
 router.post('/auth/login', validate([
     validator.check('email').isEmail(),
@@ -51,7 +51,12 @@ async (req, res) => {
     // return the token
     res.status(200).json({
         message: 'Logged in successfully',
-        token
+        token,
+        user: {
+            id: user.id,
+            username: user.username,
+            email: user.email
+        }
     });
 });
 

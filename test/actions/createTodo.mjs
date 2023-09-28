@@ -4,8 +4,8 @@ const api = axios.create({
     baseURL: `http://localhost:${config.PORT}`
 });
 const data = {
-    title: config.TODO_TITLE,
-    content: config.TODO_CONTENT
+    title: "Test Todo",
+    content: "Test todo content"
 }
 
 const createTodo = async (token) => {
