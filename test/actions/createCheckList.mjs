@@ -4,22 +4,21 @@ const api = axios.create({
     baseURL: `http://localhost:${config.PORT}`
 });
 const data = {
-    title: "Test Todo",
-    content: "Test todo content"
+    name: "Test CheckList",
 }
 
-const createTodo = async (token) => {
+const createCheckList = async (token) => {
     return new Promise(async (resolve, reject) => {
-        await api.post('/todo', data, {
+        await api.post('/checklist', data, {
             headers: {
                 authorization: token
             }
         }).then(res => {
-            resolve(res.data.todo.id);
+            resolve(res.data.checkList.id);
         }).catch(err => {
             reject(err);
         });
     });
 }
 
-export default createTodo;
+export default createCheckList;

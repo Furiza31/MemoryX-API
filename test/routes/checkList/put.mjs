@@ -3,15 +3,19 @@ import { it, describe } from 'mocha';
 import { assert, expect } from 'chai';
 import register from '../../actions/register.mjs'
 import deleteUser from '../../actions/deleteUser.mjs'
-import createTodo from '../../actions/createTodo.mjs'
+import createCheckList from '../../actions/createCheckList.mjs'
 import config from '../../config.mjs';
 const api = axios.create({
     baseURL: `http://localhost:${config.PORT}`
 });
+const data = {
+    "name": "test checkList",
+}
 
-describe('DELETE /todo/:id', () => {
+describe('PUT /checklist/:id', () => {
+
     it('should return 401 if not authenticated', async () => {
-        await api.delete('/todo/0').then(() => {
+        await api.put('/checklist/1', data).then(() => {
             assert.fail('Hum something went wrong');
         }).catch(err => {
             expect(err.response.status).to.equal(401);
@@ -21,7 +25,7 @@ describe('DELETE /todo/:id', () => {
     });
 
     it('should return 401 if the token is invalid', async () => {
-        await api.delete('/todo/0',{
+        await api.put('/checklist/1', data, {
             headers: {
                 authorization: config.INVALID_TOKEN
             }
@@ -34,9 +38,10 @@ describe('DELETE /todo/:id', () => {
         });
     });
 
-    it('should return 404 if the id is missing', async () => {
+    it('should return 404 if the check list does not exist', async () => {
         const token = await register();
-        await api.delete('/todo', {
+        const checkListId = 1;
+        await api.put(`checklist/${checkListId}`, data, {
             headers: {
                 authorization: token
             }
@@ -44,20 +49,21 @@ describe('DELETE /todo/:id', () => {
             assert.fail('Hum something went wrong');
         }).catch(err => {
             expect(err.response.status).to.equal(404);
+            expect(err.response.data.message).to.equal(`Check list ${checkListId} not found`);
         });
         await deleteUser(token);
     });
 
-    it('should return 200 if the todo has been deleted', async () => {
+    it('should return 200 if the check list has been modified', async () => {
         const token = await register();
-        const todoId = await createTodo(token);
-        await api.delete('/todo/' + todoId ,{
+        const checkListId = await createCheckList(token);
+        await api.put(`/checklist/${checkListId}`, data, {
             headers: {
                 authorization: token
             }
-        }).then(res => {
+        }).then(async res => {
             expect(res.status).to.equal(200);
-            expect(res.data.message).to.equal(`Todo ${todoId} deleted successfully`);
+            expect(res.data.message).to.equal(`CheckList ${checkListId} updated successfully`);
         }).catch(() => {
             assert.fail('Hum something went wrong');
         });

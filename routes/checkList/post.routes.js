@@ -5,17 +5,15 @@ const { validate, validator } = require('../../middlewares/validator');
 const { prisma } = require('../../prismaClient.js');
 
 /**
- * path: /todo
+ * path: /checklist
  * method: POST
- * description: create a new todo
+ * description: create a new checklist
  * access: private
- * @param {string} title | title of the todo
- * @param {string} content | content of the todo
+ * @param {string} name | name of the checklist
  * @returns {object} message and todo
  */
-router.post('/todo', validate([
-    validator.check('title').isLength({ min: 1 }),
-    validator.check('content').isLength({ min: 1 })
+router.post('/checklist', validate([
+    validator.check('name').isLength({ min: 1 }),
 ]),
 isAuthentificated,
 async (req, res) => {
@@ -23,21 +21,20 @@ async (req, res) => {
     const { id } = req.user;
 
     // get the data from the request body
-    const { title, content } = req.body;
+    const { name } = req.body;
 
-    // create a new todo
-    const newTodo = await prisma.todo.create({
+    // create a new checklist
+    const newCheckList = await prisma.checkList.create({
         data: {
-            title: title,
-            content: content,
+            name,
             userId: id
         }
     });
 
     // return a message
     res.status(200).json({
-        message: 'Todo created successfully',
-        todo: newTodo
+        message: 'Check list created successfully',
+        checkList: newCheckList
     });
 });
 

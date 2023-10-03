@@ -5,31 +5,31 @@ const { validate, validator } = require('../../middlewares/validator');
 const { prisma } = require('../../prismaClient.js');
 
 /**
- * path: /todo/:id
+ * path: /checklist/:id
  * method: DELETE
- * description: delete a todo
+ * description: delete a checklist
  * access: private
- * @param {number} id | id of the todo passed in the url
+ * @param {number} id | id of the checklist passed in the url
  * @returns {object} message
  */
-router.delete('/todo/:id', validate([
+router.delete('/checklist/:id', validate([
     validator.param('id').isInt().toInt()
 ]),
 isAuthentificated,
 async (req, res) => {
-    // get the todo id
-    const todoId = req.params.id;
+    // get the checklist id
+    const checkListId = req.params.id;
 
     // delete the todo
-    await prisma.todo.delete({
+    await prisma.checkList.delete({
         where: {
-            id: todoId,
+            id: checkListId
         }
     });
 
     // return a message
     res.status(200).json({
-        message: `Todo ${todoId} deleted successfully`
+        message: `Check list ${checkListId} deleted successfully`
     });
 });
 
