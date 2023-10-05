@@ -11,10 +11,10 @@ const data = {
     name: "Test checklist",
 }
 
-describe('POST /checklist', () => {
+describe('POST /checklists', () => {
 
     it('should return 401 if not authenticated', async () => {
-        await api.post('/checklist', data).then(() => {
+        await api.post('/checklists', data).then(() => {
             assert.fail('Hum something went wrong');
         }).catch(err => {
             expect(err.response.status).to.equal(401);
@@ -24,7 +24,7 @@ describe('POST /checklist', () => {
     });
 
     it('should return 401 if the token is invalid', async () => {
-        await api.post('/checklist', data, {
+        await api.post('/checklists', data, {
             headers: {
                 authorization: config.INVALID_TOKEN
             }
@@ -39,7 +39,7 @@ describe('POST /checklist', () => {
 
     it('should return 400 if the name is missing', async () => {
         const token = await register();
-        await api.post('/checklist', {
+        await api.post('/checklists', {
             headers: {
                 authorization: token
             }
@@ -54,7 +54,7 @@ describe('POST /checklist', () => {
 
     it('should return 200 if the checklist has been created', async () => {
         const token = await register();
-        await api.post('/checklist', data, {
+        await api.post('/checklists', data, {
             headers: {
                 authorization: token
             }

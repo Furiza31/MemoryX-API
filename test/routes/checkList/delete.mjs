@@ -9,9 +9,9 @@ const api = axios.create({
     baseURL: `http://localhost:${config.PORT}`
 });
 
-describe('DELETE /checklist/:id', () => {
+describe('DELETE /checklists/:id', () => {
     it('should return 401 if not authenticated', async () => {
-        await api.delete('/checklist/0').then(() => {
+        await api.delete('/checklists/0').then(() => {
             assert.fail('Hum something went wrong');
         }).catch(err => {
             expect(err.response.status).to.equal(401);
@@ -21,7 +21,7 @@ describe('DELETE /checklist/:id', () => {
     });
 
     it('should return 401 if the token is invalid', async () => {
-        await api.delete('/checklist/0',{
+        await api.delete('/checklists/0',{
             headers: {
                 authorization: config.INVALID_TOKEN
             }
@@ -36,7 +36,7 @@ describe('DELETE /checklist/:id', () => {
 
     it('should return 404 if the id is missing', async () => {
         const token = await register();
-        await api.delete('/checklist', {
+        await api.delete('/checklists', {
             headers: {
                 authorization: token
             }
@@ -51,7 +51,7 @@ describe('DELETE /checklist/:id', () => {
     it('should return 200 if the checklist has been deleted', async () => {
         const token = await register();
         const checkListId = await createCheckList(token);
-        await api.delete('/checklist/' + checkListId ,{
+        await api.delete('/checklists/' + checkListId ,{
             headers: {
                 authorization: token
             }

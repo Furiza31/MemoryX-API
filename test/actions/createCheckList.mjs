@@ -9,7 +9,7 @@ const data = {
 
 const createCheckList = async (token) => {
     return new Promise(async (resolve, reject) => {
-        await api.post('/checklist', data, {
+        await api.post('/checklists', data, {
             headers: {
                 authorization: token
             }

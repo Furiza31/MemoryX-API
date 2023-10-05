@@ -11,12 +11,12 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
+  id        Int         @id @default(autoincrement())
+  email     String      @unique
   username  String
   password  String
-  createdAt DateTime @default(now())
-  isAdmin   Boolean  @default(false)
+  createdAt DateTime    @default(now())
+  isAdmin   Boolean     @default(false)
   checkList CheckList[]
 }
 
@@ -31,11 +31,13 @@ model CheckList {
 }
 
 model Item {
-  id          Int      @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   name        String
-  description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  description String?   @default("")
+  done        Boolean   @default(false)
+  date        DateTime
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   checkList   CheckList @relation(fields: [checkListId], references: [id], onDelete: Cascade)
   checkListId Int
 }

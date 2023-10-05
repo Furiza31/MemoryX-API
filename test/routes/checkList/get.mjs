@@ -8,10 +8,10 @@ const api = axios.create({
     baseURL: `http://localhost:${config.PORT}`
 });
 
-describe('GET /checklist', () => {
+describe('GET /checklists', () => {
 
     it('should return 401 if not authenticated', async () => {
-        await api.get('/checklist').then(() => {
+        await api.get('/checklists').then(() => {
             assert.fail('Hum something went wrong');
         }).catch(err => {
             expect(err.response.status).to.equal(401);
@@ -21,7 +21,7 @@ describe('GET /checklist', () => {
     });
 
     it('should return 401 if the token is invalid', async () => {
-        await api.get('/checklist', {
+        await api.get('/checklists', {
             headers: {
                 authorization: config.INVALID_TOKEN
             }
@@ -36,7 +36,7 @@ describe('GET /checklist', () => {
 
     it('should return 200 if checklists are fetched successfully', async () => {
         const token = await register();
-        await api.get('/checklist', {
+        await api.get('/checklists', {
             headers: {
                 authorization: token
             }
