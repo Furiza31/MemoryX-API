@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { isAuthentificated } = require('../../../../middlewares/auth');
-const { validate, validator } = require('../../../../middlewares/validator');
-const { prisma } = require('../../../../prismaClient.js');
+const { isAuthentificated } = require('../../../middlewares/auth');
+const { validate, validator } = require('../../../middlewares/validator');
+const { prisma } = require('../../../prismaClient.js');
 
 /**
  * path: /checklist/:checkListId/item
