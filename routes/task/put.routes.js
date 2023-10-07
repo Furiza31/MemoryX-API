@@ -15,7 +15,6 @@ const { prisma } = require('../../prismaClient.js');
  * @param {string} description | description of the checklist task (optional)
  * @param {date} date | date of the checklist task (optional)
  * @param {boolean} done | done status of the checklist task (optional)
- * @param {date} date | date of the checklist task (optional)
  * @returns {object} message
  */
 router.put('/task/:checkListId/:taskId',
