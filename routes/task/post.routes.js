@@ -1,25 +1,25 @@
 const express = require('express');
 const router = express.Router();
-const { isAuthentificated } = require('../../../middlewares/auth');
-const { validate, validator } = require('../../../middlewares/validator');
-const { prisma } = require('../../../prismaClient.js');
+const { isAuthentificated } = require('../../middlewares/auth');
+const { validate, validator } = require('../../middlewares/validator');
+const { prisma } = require('../../prismaClient.js');
 
 /**
- * path: /checklist/:checkListId/item
+ * path: /task/:checkListId
  * method: POST
- * description: create a new checklist item
+ * description: create a new checklist task
  * access: private
  * @param {number} checkListId | id of the checklist passed in the url
- * @param {string} name | name of the checklist item
- * @param {string} description | description of the checklist item (optional)
- * @param {date} date | date of the checklist item
- * @returns {object} message and checkListItem
+ * @param {string} name | name of the checklist task
+ * @param {string} description | description of the checklist task (optional)
+ * @param {date} date | date of the checklist task
+ * @returns {object} message and task
  */
-router.post('/checklist/:checkListId/item',
+router.post('/task/:checkListId',
 validate([
     validator.check('name').isLength({ min: 1 }),
     validator.check('description').optional().isLength({ min: 1 }),
-    validator.param('date').isDate(),
+    validator.check('date').isDate().toDate(),
     validator.param('checkListId').isInt().toInt()
 ]),
 isAuthentificated,
@@ -41,15 +41,15 @@ async (req, res) => {
     // check if the checklist exist
     if (!checkList) {
         return res.status(404).json({
-            message: `Check list ${checkListId} not found`
+            error: `Check list ${checkListId} not found`
         });
     }
 
-    // get the checklist item data
-    const { name, description, date, done } = req.body;
+    // get the checklist task data
+    const { name, description, date } = req.body;
 
-    // create the checklist item
-    const checkListItem = await prisma.checkListItem.create({
+    // create the checklist task
+    const task = await prisma.task.create({
         data: {
             name,
             description: description || "",
@@ -58,10 +58,10 @@ async (req, res) => {
         }
     });
 
-    // return a message and the checklist item
+    // return a message and the checklist task
     res.status(200).json({
-        message: `Check list item ${checkListItem.id} created successfully`,
-        checkListItem
+        message: `Check list item ${task.id} created successfully`,
+        task
     });
 });
 

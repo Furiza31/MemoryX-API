@@ -12,7 +12,7 @@ const { prisma } = require('../../prismaClient.js');
  * @param {string} name | name of the checklist
  * @returns {object} message and checkList
  */
-router.post('/checklists', validate([
+router.post('/checklist', validate([
     validator.check('name').isLength({ min: 1 }),
 ]),
 isAuthentificated,

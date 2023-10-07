@@ -10,7 +10,7 @@ const { prisma } = require('../../prismaClient.js');
  * access: private
  * @returns {object} message and checkLists[]
  */
-router.get('/checklists',
+router.get('/checklist',
 isAuthentificated,
 async (req, res) => {
     // get the user id
@@ -19,7 +19,9 @@ async (req, res) => {
     // get all lists
     const checkLists = await prisma.checkList.findMany({
         where: {
-            userId: id
+            user: {
+                id: id
+            }
         }
     });
 

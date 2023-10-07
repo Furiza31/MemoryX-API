@@ -27,10 +27,10 @@ model CheckList {
   updatedAt DateTime @updatedAt
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int
-  items     Item[]
+  tasks     Task[]
 }
 
-model Item {
+model Task {
   id          Int       @id @default(autoincrement())
   name        String
   description String?   @default("")

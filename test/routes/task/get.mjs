@@ -9,9 +9,10 @@ const api = axios.create({
     baseURL: `http://localhost:${config.PORT}`
 });
 
-describe('DELETE /checklist/:id', () => {
+describe('GET /task/:checklistId', () => {
+
     it('should return 401 if not authenticated', async () => {
-        await api.delete('/checklist/0').then(() => {
+        await api.get('/task/9999').then(() => {
             assert.fail('Hum something went wrong');
         }).catch(err => {
             expect(err.response.status).to.equal(401);
@@ -21,7 +22,7 @@ describe('DELETE /checklist/:id', () => {
     });
 
     it('should return 401 if the token is invalid', async () => {
-        await api.delete('/checklist/0',{
+        await api.get('/task/9999', {
             headers: {
                 authorization: config.INVALID_TOKEN
             }
@@ -34,9 +35,9 @@ describe('DELETE /checklist/:id', () => {
         });
     });
 
-    it('should return 404 if the id is missing', async () => {
+    it('should return 404 if the checklist is not found', async () => {
         const token = await register();
-        await api.delete('/checklist', {
+        await api.get('/task/9999', {
             headers: {
                 authorization: token
             }
@@ -44,23 +45,26 @@ describe('DELETE /checklist/:id', () => {
             assert.fail('Hum something went wrong');
         }).catch(err => {
             expect(err.response.status).to.equal(404);
+            expect(err.response.data.error).to.equal('Check list items not found');
         });
         await deleteUser(token);
     });
 
-    it('should return 200 if the checklist has been deleted', async () => {
+    it('should return 200 if checklists are fetched successfully', async () => {
         const token = await register();
-        const checkListId = await createCheckList(token);
-        await api.delete('/checklist/' + checkListId ,{
+        let checkListId = await createCheckList(token);
+        await api.get('/task/' + checkListId, {
             headers: {
                 authorization: token
             }
-        }).then(res => {
+        }).then(async res => {
             expect(res.status).to.equal(200);
-            expect(res.data.message).to.equal(`Check list ${checkListId} deleted successfully`);
+            expect(res.data.checkList).to.not.be.undefined;
+            expect(res.data.tasks).to.not.be.undefined;
         }).catch(() => {
             assert.fail('Hum something went wrong');
         });
         await deleteUser(token);
     });
+
 });

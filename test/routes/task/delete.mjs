@@ -4,14 +4,16 @@ import { assert, expect } from 'chai';
 import register from '../../actions/register.mjs'
 import deleteUser from '../../actions/deleteUser.mjs'
 import createCheckList from '../../actions/createCheckList.mjs'
+import createTask from '../../actions/createTask.mjs';
 import config from '../../config.mjs';
 const api = axios.create({
     baseURL: `http://localhost:${config.PORT}`
 });
 
-describe('DELETE /checklist/:id', () => {
+describe('DELETE /task/:checkListId/:taskId', () => {
+
     it('should return 401 if not authenticated', async () => {
-        await api.delete('/checklist/0').then(() => {
+        await api.delete('/task/9999/99999').then(() => {
             assert.fail('Hum something went wrong');
         }).catch(err => {
             expect(err.response.status).to.equal(401);
@@ -21,7 +23,7 @@ describe('DELETE /checklist/:id', () => {
     });
 
     it('should return 401 if the token is invalid', async () => {
-        await api.delete('/checklist/0',{
+        await api.delete('/task/9999/99999', {
             headers: {
                 authorization: config.INVALID_TOKEN
             }
@@ -34,9 +36,9 @@ describe('DELETE /checklist/:id', () => {
         });
     });
 
-    it('should return 404 if the id is missing', async () => {
+    it('should return 404 if the id of the checkList is invalid', async () => {
         const token = await register();
-        await api.delete('/checklist', {
+        await api.delete('/task/9999/99999', {
             headers: {
                 authorization: token
             }
@@ -44,20 +46,38 @@ describe('DELETE /checklist/:id', () => {
             assert.fail('Hum something went wrong');
         }).catch(err => {
             expect(err.response.status).to.equal(404);
+            expect(err.response.data.error).to.equal('Check list task not found');
         });
         await deleteUser(token);
     });
 
-    it('should return 200 if the checklist has been deleted', async () => {
+    it('should return 404 if the id of the task is invalid', async () => {
         const token = await register();
         const checkListId = await createCheckList(token);
-        await api.delete('/checklist/' + checkListId ,{
+        await api.delete('/task/' + checkListId + '/99999', {
+            headers: {
+                authorization: token
+            }
+        }).then(() => {
+            assert.fail('Hum something went wrong');
+        }).catch(err => {
+            expect(err.response.status).to.equal(404);
+            expect(err.response.data.error).to.equal('Check list task not found');
+        });
+        await deleteUser(token);
+    });
+
+    it('should return 200 if the checklist task has been deleted', async () => {
+        const token = await register();
+        const checkListId = await createCheckList(token);
+        const taskId = await createTask(token, checkListId);
+        await api.delete('/task/' + checkListId + '/' + taskId, {
             headers: {
                 authorization: token
             }
         }).then(res => {
             expect(res.status).to.equal(200);
-            expect(res.data.message).to.equal(`Check list ${checkListId} deleted successfully`);
+            expect(res.data.message).to.equal(`Check list task ${taskId} deleted successfully`);
         }).catch(() => {
             assert.fail('Hum something went wrong');
         });

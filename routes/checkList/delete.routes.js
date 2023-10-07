@@ -12,7 +12,7 @@ const { prisma } = require('../../prismaClient.js');
  * @param {number} checkListId | id of the checklist passed in the url
  * @returns {object} message
  */
-router.delete('/checklists/:checkListId', validate([
+router.delete('/checklist/:checkListId', validate([
     validator.param('checkListId').isInt().toInt()
 ]),
 isAuthentificated,
@@ -23,13 +23,22 @@ async (req, res) => {
     // get user id
     const { id } = req.user;
 
-    // delete the checklist
-    await prisma.checkList.delete({
-        where: {
-            id: checkListId,
-            userId: id
-        }
-    });
+    try {
+        // delete the checklist
+        await prisma.checkList.delete({
+            where: {
+                id: checkListId,
+                user: {
+                    id: id
+                }
+            }
+        });
+    } catch (err) {
+        // if an error occured, return an error message
+        return res.status(404).json({
+            error: 'Check list not found',
+        });
+    }
 
     // return a message
     res.status(200).json({

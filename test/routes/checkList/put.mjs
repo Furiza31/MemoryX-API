@@ -12,10 +12,10 @@ const data = {
     "name": "test checkList",
 }
 
-describe('PUT /checklists/:id', () => {
+describe('PUT /checklist/:id', () => {
 
     it('should return 401 if not authenticated', async () => {
-        await api.put('/checklists/1', data).then(() => {
+        await api.put('/checklist/1', data).then(() => {
             assert.fail('Hum something went wrong');
         }).catch(err => {
             expect(err.response.status).to.equal(401);
@@ -25,7 +25,7 @@ describe('PUT /checklists/:id', () => {
     });
 
     it('should return 401 if the token is invalid', async () => {
-        await api.put('/checklists/1', data, {
+        await api.put('/checklist/1', data, {
             headers: {
                 authorization: config.INVALID_TOKEN
             }
@@ -41,7 +41,7 @@ describe('PUT /checklists/:id', () => {
     it('should return 404 if the check list does not exist', async () => {
         const token = await register();
         const checkListId = 1290;
-        await api.put(`checklists/${checkListId}`, data, {
+        await api.put(`checklist/${checkListId}`, data, {
             headers: {
                 authorization: token
             }
@@ -49,7 +49,7 @@ describe('PUT /checklists/:id', () => {
             assert.fail('Hum something went wrong');
         }).catch(err => {
             expect(err.response.status).to.equal(404);
-            expect(err.response.data.message).to.equal(`Check list ${checkListId} not found`);
+            expect(err.response.data.error).to.equal(`Check list ${checkListId} not found`);
         });
         await deleteUser(token);
     });
@@ -57,7 +57,7 @@ describe('PUT /checklists/:id', () => {
     it('should return 200 if the check list has been modified', async () => {
         const token = await register();
         const checkListId = await createCheckList(token);
-        await api.put(`/checklists/${checkListId}`, data, {
+        await api.put(`/checklist/${checkListId}`, data, {
             headers: {
                 authorization: token
             }

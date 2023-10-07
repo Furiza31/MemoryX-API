@@ -13,7 +13,7 @@ const { prisma } = require('../../prismaClient.js');
  * @param {string} name | name of the checklist optional
  * @returns {object} message
  */
-router.put('/checklists/:checkListId', validate([
+router.put('/checklist/:checkListId', validate([
     validator.check('name').optional().isLength({ min: 1 }),
     validator.param('checkListId').isInt().toInt()
 ]),
@@ -28,31 +28,25 @@ async (req, res) => {
     // get the name from the request body
     const { name } = req.body;
 
-    // get the checklist
-    const checkList = await prisma.checkList.findUnique({
-        where: {
-            id: checkListId,
-            userId: id
-        }
-    });
-
-    // check if the checklist exist
-    if (!checkList) {
+    try {
+        // update the checklist
+        await prisma.checkList.update({
+            where: {
+                id: checkListId,
+                user: {
+                    id: id
+                }
+            },
+            data: {
+                name
+            }
+        });
+    } catch (err) {
+        // if an error occured, return an error message
         return res.status(404).json({
-            message: `Check list ${checkListId} not found`
+            error: `Check list ${checkListId} not found`,
         });
     }
-
-    // update the checklist
-    await prisma.checkList.update({
-        where: {
-            id: checkListId,
-            userId: id
-        },
-        data: {
-            name
-        }
-    });
 
     // return a message
     res.status(200).json({
