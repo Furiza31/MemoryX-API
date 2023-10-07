@@ -50,7 +50,7 @@ async (req, res) => {
     });
     
     // create a token
-    const token = jwt.sign({ id: newUser.id }, config.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ id: newUser.id }, config.JWT_SECRET, { expiresIn: config.JWT_EXPIRES_IN });
 
     // return the token
     res.status(200).json({
