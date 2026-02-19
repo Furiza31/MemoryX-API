@@ -2,7 +2,20 @@ const express = require('express');
 const router = express.Router();
 const docsLoader = require('../../loader/docs.js');
 const path = require('path');
-const docs = docsLoader.init(path.join(__dirname, '../'))
+const fs = require('fs');
+
+let docs = {};
+try {
+    const routesPath = path.join(process.cwd(), 'routes');
+    if (fs.existsSync(routesPath)) {
+        docs = docsLoader.init(routesPath);
+    }
+} catch (error) {
+    docs = {};
+}
+
+const docsViewPath = path.join(process.cwd(), 'views/index.ejs');
+const hasDocsView = fs.existsSync(docsViewPath);
 
 /**
  * path: /
@@ -21,14 +34,22 @@ router.get('/', async (req, res) => {
     // check if the ip is local
     const isLocal = localIPs.includes(clientIP);
 
+    if (isLocal && hasDocsView) {
+        return res.render('index', { docs });
+    }
+
     if (isLocal) {
-        res.render('index', { docs });
-    } else {
-        res.status(200).json({
+        return res.status(200).json({
             available: true,
-            message: 'Welcome to MemoryX API'
+            message: 'Welcome to MemoryX API',
+            docs
         });
     }
+
+    return res.status(200).json({
+        available: true,
+        message: 'Welcome to MemoryX API'
+    });
 });
 
 module.exports = router;
