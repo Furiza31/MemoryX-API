@@ -137,3 +137,6 @@ dist
 .pnp.*
 
 prisma/database.db
+prisma/dev.db
+
+dist/
