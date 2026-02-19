@@ -5,7 +5,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$ROOT_DIR"
 
 APP_PID=""
-LOG_FILE="${LOG_FILE:-/tmp/memoryx-api-dev.log}"
+LOG_FILE="$(pwd)/dev-server.log"
 
 cleanup() {
     if [[ -n "$APP_PID" ]] && kill -0 "$APP_PID" 2>/dev/null; then
