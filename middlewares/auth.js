@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken')
+const jwt = require('../utils/jwt')
 const config = require('../config.json')
 
 // Midleware to check if the user is authentificated

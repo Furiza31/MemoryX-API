@@ -18,6 +18,7 @@ npm install
 
 === Initialize the database
 ```bash
+npm run migrate
 npm run generate
 ```
 
@@ -32,6 +33,11 @@ Create a `config.json` file in the root directory of the project and add the fol
 }
 ```
 
+Create a `.env` file in the root directory of the project and add the following variables:
+```json
+DATABASE_URL="file:./dev.db"
+```
+
 === Run the server
 ```bash
 npm run dev
@@ -40,6 +46,16 @@ npm run dev
 == Run tests
 ```bash
 npm run test
+```
+
+== Run build
+```bash
+npm run build
+```
+
+== Start, after build
+```bash
+npm run start
 ```
 
 == API Documentation

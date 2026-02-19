@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const jwt = require('../../../utils/jwt');
 const { validate, validator } = require('../../../middlewares/validator');
 const config = require('../../../config.json');
 const { prisma } = require('../../../prismaClient.js');

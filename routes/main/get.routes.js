@@ -29,7 +29,7 @@ router.get('/', async (req, res) => {
     const clientIP = req.ip || req.connection.remoteAddress;
 
     // List of IP addresses that are considered "local"
-    const localIPs = ['127.0.0.1', '::1'];
+    const localIPs = ['127.0.0.1', '::1', '::ffff:127.0.0.1'];
 
     // check if the ip is local
     const isLocal = localIPs.includes(clientIP);
