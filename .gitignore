@@ -139,4 +139,4 @@ dist
 prisma/database.db
 prisma/dev.db
 
-dist/
+dist/*
