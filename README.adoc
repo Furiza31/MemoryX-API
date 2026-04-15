@@ -2,7 +2,116 @@
 :toc:
 :toclevels: 5
 v1
-The MemoryX REST API - Hugo Wendjaneh
+The MemoryX REST API
+
+Hugo Wendjaneh - Fouad ID GOUAHMANE
+
+== TP 1
+
+image::docs/images/2026-04-15_16-20-10.png[]
+
+image::docs/images/2026-04-15_16-20-29.png[]
+
+image::docs/images/2026-04-15_16-20-56.png[]
+
+image::docs/images/2026-04-15_16-21-40.png[]
+
+=== Jetkins file
+
+```yaml
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                sh 'chmod +x ./run-dev-tests-build.sh'
+                sh './run-dev-tests-build.sh'
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            when {
+                anyOf {
+                    branch 'main'
+                    branch 'dev'
+                }
+            }
+            steps {
+                script {
+                    def scannerHome = tool 'SonarScanner'
+                    withSonarQubeEnv('SonarQube') {
+                        sh """
+                            ${scannerHome}/bin/sonar-scanner \
+                              -Dsonar.projectKey=MemoryX-API \
+                              -Dsonar.projectName=MemoryX-API \
+                              -Dsonar.sources=. \
+                              -Dsonar.token=$SONAR_AUTH_TOKEN
+                        """
+                    }
+                }
+            }
+        }
+
+        stage('Package artifact') {
+            when {
+                branch 'main'
+            }
+            steps {
+                sh '''
+                    rm -f memoryx-api.tar.gz
+                    tar -czf memoryx-api.tar.gz dist package.json package-lock.json README.adoc
+                '''
+            }
+        }
+
+        stage('Upload to Nexus') {
+            when {
+                branch 'main'
+            }
+            steps {
+                nexusArtifactUploader(
+                    nexusVersion: 'nexus3',
+                    protocol: 'http',
+                    nexusUrl: 'localhost:8081',
+                    groupId: 'memoryx',
+                    version: '1.0.0',
+                    repository: 'raw-hosted',
+                    credentialsId: 'nexus-creds',
+                    artifacts: [
+                        [
+                            artifactId: 'memoryx-api',
+                            classifier: '',
+                            file: 'memoryx-api.tar.gz',
+                            type: 'tar.gz'
+                        ]
+                    ]
+                )
+            }
+        }
+
+        stage('Feature branch info') {
+            when {
+                expression {
+                    env.BRANCH_NAME.startsWith('feature/')
+                }
+            }
+            steps {
+                echo "Pipeline léger exécuté pour ${env.BRANCH_NAME}"
+            }
+        }
+    }
+}
+```
+
+==== Explanation
+- The pipeline has four stages: Build, SonarQube Analysis, Package artifact, and Upload to Nexus.
+- The Build stage runs the `run-dev-tests-build.sh` script, which installs dependencies, runs tests, and builds the project.
+- The SonarQube Analysis stage runs only on the `main` and `dev` branches and performs code analysis using SonarQube.
+- The Package artifact stage runs only on the `main` branch and packages the built application into a tar.gz file.
+- The Upload to Nexus stage runs only on the `main` branch and uploads the packaged artifact to a Nexus repository.
+- The Feature branch info stage runs only for branches that start with `feature/` and prints a message indicating that a lightweight pipeline was executed for the feature branch.
+
 
 == Getting started
 === Prerequisites
