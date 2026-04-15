@@ -10,6 +10,12 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
+            when {
+                anyOf {
+                    branch 'main'
+                    branch 'dev'
+                }
+            }
             steps {
                 script {
                     def scannerHome = tool 'SonarScanner'
@@ -19,7 +25,6 @@ pipeline {
                               -Dsonar.projectKey=MemoryX-API \
                               -Dsonar.projectName=MemoryX-API \
                               -Dsonar.sources=. \
-                              -Dsonar.host.url=$SONAR_HOST_URL \
                               -Dsonar.token=$SONAR_AUTH_TOKEN
                         """
                     }
@@ -27,7 +32,10 @@ pipeline {
             }
         }
 
-	stage('Package artifact') {
+        stage('Package artifact') {
+            when {
+                branch 'main'
+            }
             steps {
                 sh '''
                     rm -f memoryx-api.tar.gz
@@ -36,7 +44,10 @@ pipeline {
             }
         }
 
-	stage('Upload to Nexus') {
+        stage('Upload to Nexus') {
+            when {
+                branch 'main'
+            }
             steps {
                 nexusArtifactUploader(
                     nexusVersion: 'nexus3',
@@ -55,6 +66,17 @@ pipeline {
                         ]
                     ]
                 )
+            }
+        }
+
+        stage('Feature branch info') {
+            when {
+                expression {
+                    env.BRANCH_NAME.startsWith('feature/')
+                }
+            }
+            steps {
+                echo "Pipeline léger exécuté pour ${env.BRANCH_NAME}"
             }
         }
     }
