@@ -36,22 +36,25 @@ pipeline {
             }
         }
 
-        stage('Upload to Nexus') {
+	stage('Upload to Nexus') {
             steps {
-                withCredentials([usernamePassword(
+                nexusArtifactUploader(
+                    nexusVersion: 'nexus3',
+                    protocol: 'http',
+                    nexusUrl: 'localhost:8081',
+                    groupId: 'memoryx',
+                    version: '1.0.0',
+                    repository: 'raw-hosted',
                     credentialsId: 'nexus-creds',
-                    usernameVariable: 'NEXUS_USER',
-                    passwordVariable: 'NEXUS_PASS'
-                )]) {
-                    sh '''
-                        set +x
-                        curl -f -u "$NEXUS_USER:$NEXUS_PASS" \
-                          -X POST "http://localhost:8081/service/rest/v1/components?repository=raw-hosted" \
-                          -F "raw.directory=memoryx-api" \
-                          -F "raw.asset1=@memoryx-api.tar.gz" \
-                          -F "raw.asset1.filename=memoryx-api.tar.gz"
-                    '''
-                }
+                    artifacts: [
+                        [
+                            artifactId: 'memoryx-api',
+                            classifier: '',
+                            file: 'memoryx-api.tar.gz',
+                            type: 'tar.gz'
+                        ]
+                    ]
+                )
             }
         }
     }
